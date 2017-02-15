@@ -1,0 +1,20 @@
+Prints occurrence frequency of specific term within given list of English
+UTF-8 text documents.
+
+usage: java -jar tfc.jar -t TERM [OPTIONS] [FILES]
+
+ -d,--input-directory <arg>   File system directory containing input files
+                              (sub-directories will not be inspected).
+ -h,--help                    Print this message.
+ -s,--skip-file-type-check    Skip input files type check (by content
+                              probing). Use at your own risk.
+ -t,--term <arg>              Term to calculate occurence frequency for.
+ -v,--verbose                 Request additional information regarding
+                              program execution.
+ -w,--wildcard <arg>          File name wildcard to be used for input file
+                              discovery in provided directory (or current
+                              one).
+
+Usage examples :
+java -jar tfc.jar -t term input_file1.txt input_file2.txt
+java -jar tfc.jar -t term -d input -w *.txt
