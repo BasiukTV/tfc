@@ -35,6 +35,10 @@ import basiuktv.tfc.util.Logging;
  */
 public class Main {
 
+	private static final String INPUT_PARSING_STAGE_FRIENDLY_NAME = "CLI arguments parsing";
+	private static final String WORK_APPRAISING_STAGE_FRIENDLY_NAME = "Work appraising";
+	private static final String WORK_PROCESSING_STAGE_FRIENDLY_NAME = "Work processing";
+
 	public static void main(String[] args) throws IOException {
 
 		// Parse command line arguments
@@ -43,7 +47,7 @@ public class Main {
 		try {
 			options = new CLIOptions(args);
 		} catch (final Exception e) {
-			System.out.println(String.format("ERROR encountered while parsing input arguments. %s\n", e.getMessage()));
+			Logging.logError(INPUT_PARSING_STAGE_FRIENDLY_NAME, e);
 			CLIOptions.printHelp();
 			return;
 		}
@@ -55,8 +59,8 @@ public class Main {
 		}
 
 		if (options.isVerbose()) {
-			Logging.logLatency("CLI arguments parsing", startTime);
-			options.echoParsedOptions();
+			Logging.logLatency(INPUT_PARSING_STAGE_FRIENDLY_NAME, startTime);
+			Logging.logInfo(options.toString());
 			startTime = System.currentTimeMillis();
 		}
 
@@ -69,13 +73,13 @@ public class Main {
 					new EnglishTermFrequencyCalculator())
 				.appraiseWork(options);
 		} catch (final Exception e) {
-			System.out.println(String.format("ERROR encountered while appraising work. %s", e.getMessage()));
+			Logging.logError(WORK_APPRAISING_STAGE_FRIENDLY_NAME, e);
 			return;
 		}
 
 		if (options.isVerbose()) {
-			Logging.logLatency("Work appraising", startTime);
-			System.out.println("Work: " + work);
+			Logging.logLatency(WORK_APPRAISING_STAGE_FRIENDLY_NAME, startTime);
+			Logging.logInfo(work.toString());
 			startTime = System.currentTimeMillis();
 		}
 
@@ -84,13 +88,13 @@ public class Main {
 		try {
 			result = new ThreadPoolExecutorProcessor().processWork(work, options);
 		} catch (final Exception e) {
-			System.out.println(String.format("ERROR encountered while processing work. %s", e.getMessage()));
+			Logging.logError(WORK_PROCESSING_STAGE_FRIENDLY_NAME, e);
 			return;
 		}
 
 		if (options.isVerbose()) {
-			Logging.logLatency("Entire work processing", startTime);
-			System.out.println("All matches count: " + result.getEveryTermCount().get());
+			Logging.logLatency(WORK_PROCESSING_STAGE_FRIENDLY_NAME, startTime);
+			Logging.logInfo(result.getEveryTermCount().get().toString());
 		}
 
 		// Print result

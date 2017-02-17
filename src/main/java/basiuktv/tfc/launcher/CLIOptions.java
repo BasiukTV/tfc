@@ -157,9 +157,9 @@ public class CLIOptions {
 				false /* Do not auto-generate usage examples */);
 	}
 
-	/** Prints the parsed options to the stdin. */
-	public void echoParsedOptions() {
-		System.out.println(String.format(
+	@Override
+	public String toString() {
+		return String.format(
 				"Following input arguments are in effect :\n"
 				+ "Term : %s\n"
 				+ "Directory : %s\n"
@@ -172,6 +172,6 @@ public class CLIOptions {
 				this.getWildcard().orElse("NONE"),
 				this.isSkipTypeCheck(),
 				this.isVerbose(),
-				this.getAdditionalFiles().isEmpty() ? "NONE" : this.getAdditionalFiles()));
+				this.getAdditionalFiles().isEmpty() ? "NONE" : this.getAdditionalFiles());
 	}
 }
